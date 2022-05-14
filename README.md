@@ -1,6 +1,6 @@
 # Wordle Clone
 
-World clone built with React.
+Wordle clone built with React.
 
 ### `npm start`
 

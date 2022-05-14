@@ -1,7 +1,7 @@
 import './index.css'
 
 const GuessTile = ({className, dataState}) => {
-  return (<div className={className} data-state={dataState}>f</div>);
+  return (<div className={className} data-state={dataState}></div>);
 }
 
 export default GuessTile;

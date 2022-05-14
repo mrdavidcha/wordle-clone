@@ -6,10 +6,8 @@ const Keyboard = () => {
   const secondRowKeys = ['A','S','D','F','G','H','J','K','L'];
   const thirdRowKeys = ['Z','X','C','V','B','N','M'];
 
-  // const a = firstRowKeys.forEach(key => <Key className="key" keyText="keyText"/>)
-
   return (
-    <div className="keyboard">
+    <div data-keyboard="" className="keyboard">
       {
         firstRowKeys.map(key => <Key className='key' key={key} keyText={key}/>)
       }

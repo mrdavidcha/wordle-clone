@@ -4,10 +4,10 @@ import './index.css'
 const Guess = () => {
   const guessTiles = 30; // 6 rows with 5 letters each.
   const className = 'tile';
-  const dataState = 'correct';
+  const dataState = '';
 
   return (
-    <div data-guess-grid className="guess-grid">
+    <div className="guess-grid" data-guess-grid="">
       {
         [...Array(guessTiles)].map((tile, i) => <GuessTile className={className} dataState={dataState} key={i}/>)
       }

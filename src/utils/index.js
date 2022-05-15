@@ -57,13 +57,51 @@ const danceTiles = (tiles) => {
   })
 }
 
-const stopInteraction = () => {
-    document.removeEventListener("click", handleKeyDown);
-    document.removeEventListener("keydown", handleMouseClick);
+// Mouse Click on letters.
+export const handleMouseClick = (e) => {
+  const { target } = e;
 
-    // document.addEventListener('keydown', handleKeyDown);
-    // document.addEventListener('click', handleMouseClick);
-    console.log('🚀 stopInteraction 🚀');
+  if (target.matches("[data-key]")) {
+    handleLetters(target.dataset.key)
+    return
+  }
+
+  if (target.matches("[data-enter]")) {
+    submitGuess();
+    return;
+  }
+
+  if (target.matches("[data-delete]")) {
+    handleDelete();
+    return;
+  }
+}
+
+// Keyboard typing.
+export const handleKeyDown = (e) => {
+  const { key } = e;
+  if (key === 'Enter') {
+    submitGuess();
+    return;
+  }
+  if (key === 'Backspace' || key === 'Delete') {
+    handleDelete();
+    return;
+  }
+
+  // Only letters.
+  if (e.key.match(/^[a-z]$/)) {
+    console.log('🚀 key ----> 🚀', key);
+
+    handleLetters(key);
+    return;
+  }
+}
+
+const stopInteraction = () => {
+  console.log('🚀 stopInteraction 🚀');
+  document.removeEventListener("keydown", handleMouseClick);
+  document.removeEventListener("click", handleKeyDown);
 }
 
 const checkWinLose = (guess, tiles) => {
@@ -85,6 +123,7 @@ const checkWinLose = (guess, tiles) => {
 }
 
 const flipTile = (tile, index, array, guess) => {
+  console.log('🚀 flipTile 🚀');
   const letter = tile.dataset.letter;
   const keyboard = document.querySelector("[data-keyboard]");
   const key = keyboard.querySelector(`[data-key="${letter}"i]`);
@@ -130,10 +169,10 @@ const submitGuess = () => {
 
   const activeTiles = [...getActiveTiles()];
 
+  // Not 5 letter word.
   if (activeTiles.length !== WORD_LENGTH) {
     showAlert("Not enough letters");
     shakeTiles(activeTiles);
-
     return;
   }
 
@@ -141,6 +180,7 @@ const submitGuess = () => {
     return word + tile.dataset.letter
   }, "");
 
+  // Word not found in the dictonary.
   if (!dictionary.includes(guess)) {
     showAlert(`${guess} is not a word.`);
     shakeTiles(activeTiles);
@@ -155,11 +195,10 @@ const submitGuess = () => {
 
 const getActiveTiles = () => {
   const guessGrid = document.querySelector("[data-guess-grid]");
-  return guessGrid.querySelectorAll('[data-state="active"]')
+  return guessGrid.querySelectorAll('[data-state="active"]');
 }
 
 const handleDelete = () => {
-  // console.log('🚀 Delete Pressed: 🚀', key);
   const guessGrid = document.querySelector("[data-guess-grid]");
 
   const activeTiles = getActiveTiles(guessGrid);
@@ -185,55 +224,13 @@ const handleLetters = (key) => {
 
   const nextTile = guessGrid.querySelector(":not([data-letter])");
 
-  nextTile.dataset.letter = key.toLowerCase()
-  nextTile.textContent = key
-  nextTile.dataset.state = "active"
-}
-
-// Mouse Click on letters.
-export const handleMouseClick = (e) => {
-  const { target } = e;
-
-  if (target.matches("[data-key]")) {
-    handleLetters(target.dataset.key)
-    return
-  }
-
-  if (target.matches("[data-enter]")) {
-    submitGuess();
-    return;
-  }
-
-  if (target.matches("[data-delete]")) {
-    handleDelete();
-    return;
-  }
-}
-
-// Keyboard typing.
-export const handleKeyDown = (e) => {
-  const { key } = e;
-  if (key === 'Enter') {
-    submitGuess();
-    return;
-  }
-  if (key === 'Backspace' || key === 'Delete') {
-    handleDelete();
-    return;
-  }
-
-  // Only letters.
-  if (e.key.match(/^[a-z]$/)) {
-    console.log('🚀 key ----> 🚀', key);
-
-    handleLetters(key);
-    return;
-  }
+  nextTile.dataset.letter = key.toLowerCase();
+  nextTile.textContent = key;
+  nextTile.dataset.state = "active";
 }
 
 export const startInteraction = () => {
+  console.log('🚀 startInteraction 🚀');
   document.addEventListener('keydown', handleKeyDown);
   document.addEventListener('click', handleMouseClick);
-  // window.addEventListener("click", handleKeyDown)
-  // window.addEventListener("keydown", handleMouseClick)
 }
